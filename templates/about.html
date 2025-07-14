@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="intro1">
+        <p class="pintro">"In a world full of trends, I choose timeless stitches."</p>
+    </div>
+
+    <div class="history">
+        <h1>HOW WE CREATED TUSSAJ</h1>
+        <p>Tussa J began with a handmade bunny that sparked a friendship and a dream. When I created my first crochet bunny, my friend, a fellow crocheter, lovingly named it Tussa. She wanted it so much that I made her another, which she called Tussa Junior—Tussa J. Inspired by the joy of creating, the three of us—my friend, her best friend, and I—turned our shared passion for crocheting into a small business, honoring our beginnings by naming it Tussa J.</p>
+    </div>
+
+    <div class="team">
+        <h1>OUR EXECUTIVE TEAM</h1>
+        <div class="people">
+            {%for team in Team%}
+            <div>
+                <img src="{{team['image']}}" alt="img">
+                <p>{{team['name']}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

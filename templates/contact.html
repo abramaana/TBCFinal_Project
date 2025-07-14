@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="oh">
+    <div class="intro1">
+        <p class="pintro">"We'd love to hear from you!"</p>
+    </div>
+
+    <div class="historyC">
+        <h1>Contact Us</h1>
+        <p>Whether you have a question, feedback, or need assistance, feel free to reach out. Our team is here to help!</p>
+    </div>
+
+    <div class="contact-info">
+        <h2>Our Contact Information</h2>
+        <ul>
+            <li>Phone: +995 577 777 777</li>
+            <li>Email: TussaJ@gmail.com</li>
+            <li>Address: 123 Crochet Lane, Yarn City, Georgia</li>
+        </ul>
+        <p>Operating hours: 9am-9pm EST (Monday-Friday), 9am-6pm EST (Saturday).</p>
+    </div>
+
+    <div class="team">
+        <form class="contact-form">
+            <div>
+                <label>Name:</label><br>
+                <input placeholder="Your Name" required>
+            </div>
+            <div>
+                <label>Email:</label><br>
+                <input placeholder="Your Email" required>
+            </div>
+            <div>
+                <label>Message:</label><br>
+                <textarea rows="5" placeholder="Your Message" required></textarea>
+            </div>
+            <div>
+                <button class="services">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
