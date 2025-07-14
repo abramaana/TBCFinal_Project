@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from forms import RegisterForm
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config["SECRET_KEY"] = "111"
 items=[
     {"name" : "Bunny-20 GEL", "image" : "photo2.png"},
@@ -25,7 +25,9 @@ news1=[
     {"class" : "shoulder", "name" : "SHOULDER BAG : colors" , "image" : ["pr2.png" , "new6.png"]},
     {"class" : "valentine", "name" : "VALENTINE'S BAG : colors" , "image" : ["pr6.png" , "new5.png"]},
 ]
-profiles=[]
+profiles=[
+    {"user" : "admin", "password" : "123123", "email" : "abramaana912@gmail.com", "reply" : []}
+]
 role="admin"
 
 @app.route('/', methods=["GET", "POST"])
@@ -38,23 +40,43 @@ def home():
 
 @app.route('/about')
 def about():
-    return render_template('about.html',role=role,Team=Team)
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
+        profiles.append(new_user)
+    return render_template('about.html',role=role,Team=Team, form=form)
 
 @app.route('/services')
 def services():
-    return render_template('services.html', items=items,role=role)
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
+        profiles.append(new_user)
+    return render_template('services.html', items=items,role=role, form =form)
 
 @app.route('/news')
 def news():
-    return render_template('news.html', role=role, news=news1)
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
+        profiles.append(new_user)
+    return render_template('news.html', role=role, news=news1, form=form)
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html')
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
+        profiles.append(new_user)
+    return render_template('contact.html', form=form)
 
 @app.route('/profile/<int:profile_id>')
 def profile(profile_id):
-    return render_template('profile.html', profile_id = profile_id, profile=profiles[profile_id])
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
+        profiles.append(new_user)
+    return render_template('profile.html', profile_id = profile_id, profile=profiles[profile_id], form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)

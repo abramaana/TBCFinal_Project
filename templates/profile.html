@@ -2,10 +2,14 @@
 
 {% block content %}
 <div class="profile">
-    <img class="imgP" src="">
+    <p style="font-size:40px; padding-bottom:20px;">Your profile</p>
     <div class="infoP">
-        <p class="username"></p>
-        <p class="email"></p>
+        <p class="username">{{profile['user']}}</p>
+        <p class="email">{{profile['email']}}</p>
+        <p>Replies to your messages below</p>
+        {% for reply in profile['reply'] %}
+            <p class="reply">{{reply}}</p>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

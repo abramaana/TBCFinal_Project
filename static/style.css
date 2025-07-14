@@ -1131,3 +1131,13 @@
 
 /* Profile Page */
 
+.profile{
+margin: 30px;
+}
+.infoP{
+padding-left: 50px;
+padding-right: 50px;
+line-height: 2;
+font-size: 25px;
+color: #3b3b3b;
+}
