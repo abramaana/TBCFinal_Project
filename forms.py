@@ -13,6 +13,6 @@ class RegisterForm(FlaskForm):
     submit = SubmitField()
 
 class ItemForm(FlaskForm):
-    name = StringField(validators=[DataRequired())
+    name = StringField(validators=[DataRequired()])
     image = FileField()
     submit = SubmitField()

@@ -1,20 +1,9 @@
 from flask import render_template, redirect
-from forms import RegisterForm, MovieForm
+from forms import RegisterForm, ItemForm
 from ext import app, db
 from models import Item
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
-items=[
-    {"name" : "Bunny-20 GEL", "image" : "photo2.png"},
-    {"name" : "Dino-15 GEL", "image" : "photo1.png"},
-    {"name" : "Duck-15 GEL", "image" : "photo3.png"},
-    {"name" : "Hello kitty-20 GEL", "image" : "pr1.png"},
-    {"name" : "Red bag with a white bow-30 GEL", "image" : "pr2.png"},
-    {"name" : "Pouch with bows-15 GEL", "image" : "pr3.png"},
-    {"name" : "Book cover-15 GEL", "image" : "pr4.png"},
-    {"name" : "Asymmetrical green top-15 GEL", "image" : "pr5.png"},
-    {"name" : "Blue valentine's bag-15 GEL", "image" : "pr6.png"}
-]
 Team=[
     {"name" : "Nino Kelenjeridze", "image" : "nino.png"},
     {"name" : "Ana Abramishvili", "image" : "ana.png"},
