@@ -1,5 +1,5 @@
 from ext import db, app
-from models import Item
+from models import Item,  User
 
 with app.app_context():
     db.drop_all()
