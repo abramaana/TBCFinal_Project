@@ -156,6 +156,32 @@ def contact():
 
     return render_template('contact.html', form=form, formL=formL)
 
+@app.route('/example', methods=["GET", "POST"])
+def example():
+    formL = LoginForm()
+    form = RegisterForm()
+
+    if formL.submit.data and formL.validate():
+        user = User.query.filter_by(username=formL.username.data).first()
+        if user and user.check_password(formL.password.data):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('contact'))
+        else:
+            flash('Invalid username or password', 'danger')
+
+    if form.submit.data and form.validate():
+        new_user = User(
+            email=form.email.data,
+            username=form.username.data
+        )
+        new_user.set_password(form.password.data)
+        new_user.create()
+        flash('Registration successful!', 'success')
+        return redirect(url_for('contact'))
+
+    return render_template('example.html', form=form, formL=formL)
+
 
 @app.route('/profile')
 @login_required
