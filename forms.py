@@ -11,3 +11,8 @@ class RegisterForm(FlaskForm):
     usernameL = StringField(validators=[DataRequired(), Length(min=2, max=20)])
     passwordL = PasswordField(validators=[DataRequired(), Length(min=6, max=20)])
     submit = SubmitField()
+
+class ItemForm(FlaskForm):
+    name = StringField(validators=[DataRequired())
+    image = FileField()
+    submit = SubmitField()
