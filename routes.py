@@ -1,133 +1,213 @@
-from flask import render_template, redirect
+from flask import render_template, redirect, url_for, flash, request
 from forms import RegisterForm, ItemForm, LoginForm
 from ext import app, db
-from models import Item
-from wtforms.validators import DataRequired, Email, Length, EqualTo
+from models import Item, User
+from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.utils import secure_filename
+import os
+from os import path
 
-Team=[
-    {"name" : "Nino Kelenjeridze", "image" : "nino.png"},
-    {"name" : "Ana Abramishvili", "image" : "ana.png"},
-    {"name" : "Mariam Bitsadze", "image" : "mari.png"}
+Team = [
+    {"name": "Nino Kelenjeridze", "image": "nino.png"},
+    {"name": "Ana Abramishvili", "image": "ana.png"},
+    {"name": "Mariam Bitsadze", "image": "mari.png"}
 ]
-news1=[
-    {"class" : "bunny", "name" : "BUNNY : hat , dress , overalls(coming soon)" , "image" : ["photo2.png" , "new2.png", "new3.png", "new4.png"]},
-    {"class" : "shoulder", "name" : "SHOULDER BAG : colors" , "image" : ["pr2.png" , "new6.png"]},
-    {"class" : "valentine", "name" : "VALENTINE'S BAG : colors" , "image" : ["pr6.png" , "new5.png"]},
+
+news1 = [
+    {"class": "bunny", "name": "BUNNY : hat , dress , overalls(coming soon)",
+     "image": ["photo2.png", "new2.png", "new3.png", "new4.png"]},
+    {"class": "shoulder", "name": "SHOULDER BAG : colors", "image": ["pr2.png", "new6.png"]},
+    {"class": "valentine", "name": "VALENTINE'S BAG : colors", "image": ["pr6.png", "new5.png"]},
 ]
-role="admin"
+
 
 @app.route('/', methods=["GET", "POST"])
 def home():
     formL = LoginForm()
-    if formL.validate_on_submit():
-        user = User.query.filter(form.username.data == User.username).first()
-        check_pass = user.check_password(form.password.data)
-        if user and check_pass:
-            login_user(user)
-            return redirect("/")
     form = RegisterForm()
-    if form.validate_on_submit():
-        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
-        profiles.append(new_user)
-    return render_template('index.html',form=form, formL=formL)
+
+    if formL.submit.data and formL.validate():
+        user = User.query.filter_by(username=formL.username.data).first()
+        if user and user.check_password(formL.password.data):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid username or password', 'danger')
+
+    if form.submit.data and form.validate():
+        new_user = User(
+            email=form.email.data,
+            username=form.username.data
+        )
+        new_user.set_password(form.password.data)
+        new_user.create()
+        flash('Registration successful!', 'success')
+        return redirect(url_for('home'))
+
+    return render_template('index.html', form=form, formL=formL)
+
 
 @app.route('/about', methods=["GET", "POST"])
 def about():
     formL = LoginForm()
-    if formL.validate_on_submit():
-        user = User.query.filter(form.username.data == User.username).first()
-        check_pass = user.check_password(form.password.data)
-        if user and check_pass:
-            login_user(user)
-            return redirect("/")
     form = RegisterForm()
-    if form.validate_on_submit():
-        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
-        profiles.append(new_user)
-    return render_template('about.html',role=role,Team=Team, form=form, formL=formL)
+
+    if formL.submit.data and formL.validate():
+        user = User.query.filter_by(username=formL.username.data).first()
+        if user and user.check_password(formL.password.data):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('about'))
+        else:
+            flash('Invalid username or password', 'danger')
+
+    if form.submit.data and form.validate():
+        new_user = User(
+            email=form.email.data,
+            username=form.username.data
+        )
+        new_user.set_password(form.password.data)
+        new_user.create()
+        flash('Registration successful!', 'success')
+        return redirect(url_for('about'))
+
+    return render_template('about.html', Team=Team, form=form, formL=formL)
+
 
 @app.route('/services', methods=["GET", "POST"])
 def services():
     formL = LoginForm()
-    if formL.validate_on_submit():
-        user = User.query.filter(form.username.data == User.username).first()
-        check_pass = user.check_password(form.password.data)
-        if user and check_pass:
-            login_user(user)
-            return redirect("/")
-    items=Item.query.all()
     form = RegisterForm()
-    if form.validate_on_submit():
-        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
-        profiles.append(new_user)
-    return render_template('services.html', items=items,role=role, form =form, formL=formL)
+
+    if formL.submit.data and formL.validate():
+        user = User.query.filter_by(username=formL.username.data).first()
+        if user and user.check_password(formL.password.data):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('services'))
+        else:
+            flash('Invalid username or password', 'danger')
+
+    if form.submit.data and form.validate():
+        new_user = User(
+            email=form.email.data,
+            username=form.username.data
+        )
+        new_user.set_password(form.password.data)
+        new_user.create()
+        flash('Registration successful!', 'success')
+        return redirect(url_for('services'))
+
+    items = Item.query.all()
+    return render_template('services.html', items=items, form=form, formL=formL)
+
 
 @app.route('/news', methods=["GET", "POST"])
 def news():
     formL = LoginForm()
-    if formL.validate_on_submit():
-        user = User.query.filter(form.username.data == User.username).first()
-        check_pass = user.check_password(form.password.data)
-        if user and check_pass:
-            login_user(user)
-            return redirect("/")
     form = RegisterForm()
-    if form.validate_on_submit():
-        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
-        profiles.append(new_user)
-    return render_template('news.html', role=role, news=news1, form=form, formL=formL)
+
+    if formL.submit.data and formL.validate():
+        user = User.query.filter_by(username=formL.username.data).first()
+        if user and user.check_password(formL.password.data):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('news'))
+        else:
+            flash('Invalid username or password', 'danger')
+
+    if form.submit.data and form.validate():
+        new_user = User(
+            email=form.email.data,
+            username=form.username.data
+        )
+        new_user.set_password(form.password.data)
+        new_user.create()
+        flash('Registration successful!', 'success')
+        return redirect(url_for('news'))
+
+    return render_template('news.html', news=news1, form=form, formL=formL)
+
 
 @app.route('/contact', methods=["GET", "POST"])
 def contact():
     formL = LoginForm()
-    if formL.validate_on_submit():
-        user = User.query.filter(form.username.data == User.username).first()
-        check_pass = user.check_password(form.password.data)
-        if user and check_pass:
-            login_user(user)
-            return redirect("/")
     form = RegisterForm()
-    if form.validate_on_submit():
-        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
-        profiles.append(new_user)
+
+    if formL.submit.data and formL.validate():
+        user = User.query.filter_by(username=formL.username.data).first()
+        if user and user.check_password(formL.password.data):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('contact'))
+        else:
+            flash('Invalid username or password', 'danger')
+
+    if form.submit.data and form.validate():
+        new_user = User(
+            email=form.email.data,
+            username=form.username.data
+        )
+        new_user.set_password(form.password.data)
+        new_user.create()
+        flash('Registration successful!', 'success')
+        return redirect(url_for('contact'))
+
     return render_template('contact.html', form=form, formL=formL)
 
-@app.route('/profile/<int:profile_id>', methods=["GET", "POST"])
-def profile(profile_id):
-    formL = LoginForm()
-    if formL.validate_on_submit():
-        user = User.query.filter(form.username.data == User.username).first()
-        check_pass = user.check_password(form.password.data)
-        if user and check_pass:
-            login_user(user)
-            return redirect("/")
-    form = RegisterForm()
-    if form.validate_on_submit():
-        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
-        profiles.append(new_user)
-    return render_template('profile.html', profile_id = profile_id, profile=profiles[profile_id], form=form, formL=formL)
+
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html', user=current_user)
+
 
 @app.route('/add_item', methods=["GET", "POST"])
-def add_item(profile_id):
+@login_required
+def add_item():
+    item_form = ItemForm()
     formL = LoginForm()
-    if formL.validate_on_submit():
-        user = User.query.filter(form.username.data == User.username).first()
-        check_pass = user.check_password(form.password.data)
-        if user and check_pass:
-            login_user(user)
-            return redirect("/")
-    item=ItemForm()
     form = RegisterForm()
-    if item.validate_on_submit():
-        new_item=Item(name=item.name.data)
-        image = item.image.data
-        directory = path.join(app.root_path, "static", image.filename)
-        image.save(directory)
-        new_item.image = image.filename
-        db.session.add(new_item)
-        bd.session.commit()
-        return redirect("/services")
-    if form.validate_on_submit():
-        new_user={ "email" : form.email.data, "username" : form.username.data, "password" : form.password.data }
-        profiles.append(new_user)
-    return render_template('add_item.html', form=form, item=item, formL=formL)
+
+    if item_form.validate_on_submit():
+        new_item = Item(
+            name=item_form.name.data
+        )
+
+        if item_form.image.data:
+            image = item_form.image.data
+            filename=secure_filename(image.filename)
+            save_path= os.path.join(app.root_path, "static", filename)
+            image.save(save_path)
+            new_item.image = filename
+
+        new_item.create()
+        flash('Item added successfully!', 'success')
+        return redirect(url_for('services'))
+
+    return render_template('add_item.html', form=form, item=item_form, formL=formL)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('home'))
+
+
+'''@app.route('/create_admin')
+def create_admin():
+    admin = User.query.filter_by(username='admin').first()
+    if admin:
+        return "Admin already exists"
+
+    admin = User(
+        email='admin@tussaj.com',
+        username='admin',
+        role='admin'
+    )
+    admin.set_password('admin123')
+    admin.create()
+    return "Admin user created successfully"'''

@@ -22,7 +22,7 @@
 	        align-items: center;
 }
 .container ul {
-	width: 500px;
+	width: 600px;
 	display:-webkit-box;
 	display:-ms-flexbox;
 	display:flex;
@@ -1140,4 +1140,8 @@ padding-right: 50px;
 line-height: 2;
 font-size: 25px;
 color: #3b3b3b;
+}
+
+nav ul li a.active{
+color: deeppink;
 }

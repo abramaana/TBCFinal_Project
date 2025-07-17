@@ -2,14 +2,15 @@
 
 {% block content %}
 <div class="profile">
-    <p style="font-size:40px; padding-bottom:20px;">Your profile</p>
+    <p style="font-size:40px; padding-bottom:20px;">Your Profile</p>
     <div class="infoP">
-        <p class="username">{{profile['user']}}</p>
-        <p class="email">{{profile['email']}}</p>
-        <p>Replies to your messages below</p>
-        {% for reply in profile['reply'] %}
-            <p class="reply">{{reply}}</p>
-        {% endfor %}
+        <p class="username">Username: {{ user.username }}</p>
+        <p class="email">Email: {{ user.email }}</p>
+        <p class="role">Role: {{ user.role }}</p>
+        {% if user.is_admin() %}
+            <p style="color: green;"><strong>Admin Privileges Active</strong></p>
+            <a href="{{ url_for('add_item') }}" class="services" style="font-size: 12px; color: black;">Add New Item</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

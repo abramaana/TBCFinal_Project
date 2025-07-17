@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="add-item">
+    <h1>Add New Item</h1>
+    <p>Admin Panel - Add new products to the store</p>
+    
+    <div class="form-container">
+        {% for error in item.errors %}
+            {% for field_errors in item.errors[error] %}
+                <div class="alert alert-danger">{{ field_errors }}</div>
+            {% endfor %}
+        {% endfor %}
+        
+        <form method="post" enctype="multipart/form-data">
+            {{ item.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ item.name.label(class="form-label") }}
+                {{ item.name(class="form-control", placeholder="Enter item name") }}
+            </div>
+
+            
+            <div class="form-group">
+                {{ item.image.label(class="form-label") }}
+                {{ item.image(class="form-control") }}
+            </div>
+            
+            <div class="form-group">
+                {{ item.submit(class="services") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
